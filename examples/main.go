@@ -4,11 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"net/mail"
 	"os"
 	"strconv"
 
-	"github.com/go-gomail/gomail"
 	"golang.org/x/term"
 
 	"github.com/matcornic/hermes"
@@ -104,32 +102,12 @@ func main() {
 }
 
 func generateEmails(h hermes.Hermes, email hermes.Email, example string) {
+	_ = "STUB: not implemented"
 	// Generate the HTML template and save it
-	res, err := h.GenerateHTML(email)
-	if err != nil {
-		panic(err)
-	}
-	err = os.MkdirAll(h.Theme.Name(), 0750)
-	if err != nil {
-		panic(err)
-	}
-	htmlFile := fmt.Sprintf("%v/%v.%v.html", h.Theme.Name(), h.Theme.Name(), example)
-	err = os.WriteFile(htmlFile, []byte(res), 0600)
-	if err != nil {
-		panic(err)
-	}
-
-	// Generate the plaintext template and save it
-	res, err = h.GeneratePlainText(email)
-	if err != nil {
-		panic(err)
-	}
-	plaintextFile := fmt.Sprintf("%v/%v.%v.txt", h.Theme.Name(), h.Theme.Name(), example)
-	err = os.WriteFile(plaintextFile, []byte(res), 0600)
-	if err != nil {
-		panic(err)
-	}
+	return
 }
+
+// Generate the plaintext template and save it
 
 type smtpAuthentication struct {
 	Server         string
@@ -148,45 +126,6 @@ type sendOptions struct {
 
 // send sends the email
 func send(smtpConfig smtpAuthentication, options sendOptions, htmlBody string, txtBody string) error {
-
-	if smtpConfig.Server == "" {
-		return errEmptyServerConfig
-	}
-
-	if smtpConfig.Port == 0 {
-		return errEmptyPort
-	}
-
-	if smtpConfig.SMTPUser == "" {
-		return errEmptyUser
-	}
-
-	if smtpConfig.SenderIdentity == "" {
-		return errEmptySenderIdentity
-	}
-
-	if smtpConfig.SenderEmail == "" {
-		return errEmptySenderEmail
-	}
-
-	if options.To == "" {
-		return errEmptyReceiverEmails
-	}
-
-	from := mail.Address{
-		Name:    smtpConfig.SenderIdentity,
-		Address: smtpConfig.SenderEmail,
-	}
-
-	m := gomail.NewMessage()
-	m.SetHeader("From", from.String())
-	m.SetHeader("To", options.To)
-	m.SetHeader("Subject", options.Subject)
-
-	m.SetBody("text/plain", txtBody)
-	m.AddAlternative("text/html", htmlBody)
-
-	d := gomail.NewDialer(smtpConfig.Server, smtpConfig.Port, smtpConfig.SMTPUser, smtpConfig.SMTPPassword)
-
-	return d.DialAndSend(m)
+	_ = "STUB: not implemented"
+	return nil
 }

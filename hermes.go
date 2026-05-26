@@ -1,14 +1,7 @@
 package hermes
 
 import (
-	"bytes"
 	"html/template"
-
-	"dario.cat/mergo"
-	"github.com/Masterminds/sprig"
-	"github.com/jaytaylor/html2text"
-	"github.com/russross/blackfriday/v2"
-	"github.com/vanng822/go-premailer/premailer"
 )
 
 // Hermes is an instance of the hermes email generator
@@ -78,9 +71,7 @@ type Body struct {
 }
 
 // ToHTML converts Markdown to HTML
-func (c Markdown) ToHTML() template.HTML {
-	return template.HTML(blackfriday.Run([]byte(c)))
-}
+func (c Markdown) ToHTML() template.HTML { _ = "STUB: not implemented"; return *new(template.HTML) }
 
 // Entry is a simple entry of a map
 // Allows using a slice of entries instead of a map
@@ -125,108 +116,42 @@ type Template struct {
 }
 
 func setDefaultEmailValues(e *Email) error {
+	_ = "STUB: not implemented"
 	// Default values of an email
-	defaultEmail := Email{
-		Body: Body{
-			Intros:     []string{},
-			Dictionary: []Entry{},
-			Outros:     []string{},
-			Signature:  "Yours truly",
-			Greeting:   "Hi",
-		},
-	}
-	// Merge the given email with default one
-	// Default one overrides all zero values
-	return mergo.Merge(e, defaultEmail)
-}
-
-// default values of the engine
-func setDefaultHermesValues(h *Hermes) error {
-	defaultTextDirection := TDLeftToRight
-	defaultHermes := Hermes{
-		Theme:         new(Default),
-		TextDirection: defaultTextDirection,
-		Product: Product{
-			Name:        "Hermes",
-			Copyright:   "Copyright © 2025 Hermes. All rights reserved.",
-			TroubleText: "If you’re having trouble with the button '{ACTION}', copy and paste the URL below into your web browser.",
-		},
-	}
-	// Merge the given hermes engine configuration with default one
-	// Default one overrides all zero values
-	err := mergo.Merge(h, defaultHermes)
-	if err != nil {
-		return err
-	}
-	if h.TextDirection != TDLeftToRight && h.TextDirection != TDRightToLeft {
-		h.TextDirection = defaultTextDirection
-	}
-
 	return nil
 }
+
+// Merge the given email with default one
+// Default one overrides all zero values
+
+// default values of the engine
+func setDefaultHermesValues(h *Hermes) error { _ = "STUB: not implemented"; return nil }
+
+// Merge the given hermes engine configuration with default one
+// Default one overrides all zero values
 
 // GenerateHTML generates the email body from data to an HTML Reader
 // This is for modern email clients
 func (h *Hermes) GenerateHTML(email Email) (string, error) {
-	err := setDefaultHermesValues(h)
-	if err != nil {
-		return "", err
-	}
-
-	return h.generateTemplate(email, h.Theme.HTMLTemplate())
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 // GeneratePlainText generates the email body from data
 // This is for old email clients
 func (h *Hermes) GeneratePlainText(email Email) (string, error) {
-	err := setDefaultHermesValues(h)
-	if err != nil {
-		return "", err
-	}
-	template, err := h.generateTemplate(email, h.Theme.PlainTextTemplate())
-	if err != nil {
-		return "", err
-	}
-
-	return html2text.FromString(template, html2text.Options{PrettyTables: true})
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (h *Hermes) generateTemplate(email Email, tplt string) (string, error) {
-	err := setDefaultEmailValues(&email)
-	if err != nil {
-		return "", err
-	}
-
-	// Generate the email from Golang template
-	// Allow usage of simple function from sprig : https://github.com/Masterminds/sprig
-	t, err := template.New("hermes").Funcs(sprig.FuncMap()).Funcs(templateFuncs).Funcs(template.FuncMap{
-		"safe": func(s string) template.HTML { return template.HTML(s) }, // Used for keeping comments in generated template
-	}).Parse(tplt)
-	if err != nil {
-		return "", err
-	}
-
-	var b bytes.Buffer
-	err = t.Execute(&b, Template{*h, email})
-	if err != nil {
-		return "", err
-	}
-
-	res := b.String()
-	if h.DisableCSSInlining {
-		return res, nil
-	}
-
-	// Inlining CSS
-	prem, err := premailer.NewPremailerFromString(res, premailer.NewOptions())
-	if err != nil {
-		return "", err
-	}
-
-	html, err := prem.Transform()
-	if err != nil {
-		return "", err
-	}
-
-	return html, nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
+
+// Generate the email from Golang template
+// Allow usage of simple function from sprig : https://github.com/Masterminds/sprig
+
+// Used for keeping comments in generated template
+
+// Inlining CSS
